@@ -2,12 +2,20 @@ import Avatar from "../../assets/avatar.svg"
 import InputField from "../../helpers/InputField"
 import { AiOutlineEyeInvisible, AiOutlineEye } from "react-icons/ai";
 import { useState } from "react";
+import {useForm} from "react-hook-form"
+import { zodResolver } from "@hookform/resolvers/zod";
+import { EmployeeSchemaType, employeeSchema } from "../validations/user";
 
 const PersonalInfo = () => {
   const [pwdOpenEye, setPwdOpenEye] = useState(false);
   const pwdToggle = () => {
     setPwdOpenEye(!pwdOpenEye);
   }
+  const {
+    register,
+    handleSubmit,
+    formState: { errors }
+  } = useForm<EmployeeSchemaType>({ resolver: zodResolver(employeeSchema) });
   return (
 <div className="mx-auto w-[80%] font-jost pt-4">
       <form
