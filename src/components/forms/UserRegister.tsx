@@ -7,10 +7,21 @@ import InputField from "../../helpers/InputField";
 import { registerHr } from "../../Apis/UserAuth";
 import {zodResolver} from "@hookform/resolvers/zod"
 import { RegisterSchema,SignUpSchemaType } from "../validations/user";
+import toast, { Toaster } from "react-hot-toast";
+import { BeatLoader } from "react-spinners";
+import { useNavigate } from "react-router-dom";
   
+export const getErrorMsg = (error:any) => {
+  return (error.message);
+// return "you entered a wrong password!"
+};
 
 const UserRegister = () => {
+  const [loading,setLoading]=useState(false);
   const [pwdOpenEye, setPwdOpenEye] = useState(false);
+  const [formSubmitted, setFormSubmitted] = useState(false);
+  // const [formSubmitted,setFormSubmitted]=useState(false)
+  const navigate=useNavigate();
   const pwdToggle = () => {
     setPwdOpenEye(!pwdOpenEye);
   };
@@ -19,33 +30,36 @@ const UserRegister = () => {
     handleSubmit,
     formState: { errors }
   } = useForm<SignUpSchemaType>({ resolver: zodResolver(RegisterSchema) });
-  const {mutate,isLoading,isError}=useMutation(registerHr,{
-    onSuccess:()=>{
-      console.log("user create successfully");
-    },
-    onError:(error)=>{
-      console.log("the error is ",error)
-    }
-  })
-  const onSubmit=(data: any)=>{
+  // const {mutate,isError,isLoading}=useMutation(registerHr,{
+  //   onError: (error) => {
+  //     setLoading(false); // Reset loading state on error
+  //     toast.error("Error creating user");
+  //     console.log("the error is ", error);
+  //   }
+  //   })
+  const onSubmit = async (data: any) => {
+    setLoading(true);
+
     try {
-       mutate(data);
-      // Registration successful, redirect or perform any other action
-      console.log("HR registered successfully!");
+      const user=await registerHr(data);
+      if(user.status===200){
+        toast.success("HR created successfully!!")
+        navigate("/login")
+      }
     } catch (error) {
-      console.error("Error registering HR:", error);
+      console.log(error)
+    } 
+    finally {
+      setLoading(false);
     }
-  }
+  };
   return (
     <div className="flex  m-[0] justify-between font-jost overflow-hidden xs:flex-col">
       <div className="w-[50vw] bg-[#307730] h-[100vh] flex items-center justify-center xs:hidden">
         {/* <img className=" " src={illustrator1} alt="" /> */}
       </div>
       <div className=" h-screen flex items-center flex-col xs:w-screen">
-      {isError && <p>Error creating post</p>}
-      {isLoading? (
-        <p>Submitting...</p>
-      ) : (
+      {/* {isError && <p>Error creating post</p>} */}
         <form
           onSubmit={ handleSubmit(onSubmit)}
           className="px-5 xs:w-[80vw] xs:mx-auto w-[30vw] p-[5px] rounded-md h-[80%] mr-[100px] self-start relative top-[-10px]"
@@ -129,14 +143,19 @@ const UserRegister = () => {
             <div></div>
 
             <button className="bg-[#307730] w-full text-white self-center py-[10px] rounded-lg text-[16px]">
-              Sign Up
+            {
+            loading ? <p className="my-auto"> <BeatLoader color="#fff" /></p> : <p>Register</p>
+            }
             </button>
             <Link to="/login" className="text-[#6c6c6c] -[center] flex gap-1">
               don't have an account<p className="text-[#307730]">account?</p>
             </Link>
           </div>
         </form>
-              )}
+        <Toaster
+        position="top-right"
+        reverseOrder={false}
+      />
         {/* <div className="mt-[70px] mr-[20%]">
           <GoogleLogin />
         </div> */}

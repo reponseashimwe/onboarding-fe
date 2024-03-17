@@ -5,6 +5,7 @@ import { useState } from "react";
 import {useForm} from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod";
 import { EmployeeSchemaType, employeeSchema } from "../validations/user";
+import { Link } from "react-router-dom";
 
 const PersonalInfo = () => {
   const [pwdOpenEye, setPwdOpenEye] = useState(false);
@@ -131,14 +132,17 @@ const PersonalInfo = () => {
                 type="button"
                 className="bg-[white] w-[100px] h-[40px] text-[#307730] border-[#307730] rounded-md border-[1px]"
               >
+                <Link to="/dashboard/addEmployee">
                 Cancel
+                </Link>
               </button>
               <button
-                type="submit"
+                type="button"
                 className="bg-[#307730] text-[white] w-[100px] h-[40px] rounded-md flex items-center justify-center "
               >
-                {/* {loading1 ? <Loader /> : "Save"}  */}
-                Save
+                <Link to="/dashboard/addEmployee/professionalinfo">
+                Next
+                </Link>
               </button>
             </div>
           </div>

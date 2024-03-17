@@ -7,10 +7,13 @@ import {useForm} from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod";
 import { loginSchema,SignInSchemaType } from "../validations/user";
 import { useMutation } from "react-query";
+import { BeatLoader } from "react-spinners";
+import toast from "react-hot-toast";
 
 
 const UserLogin = () => {
   const [pwdOpenEye, setPwdOpenEye] = useState(false);
+
   const pwdToggle = () => {
     setPwdOpenEye(!pwdOpenEye);
   }
@@ -19,13 +22,13 @@ const UserLogin = () => {
     handleSubmit,
     formState: { errors }
   } = useForm<SignInSchemaType>({ resolver: zodResolver(loginSchema) });
-  const {mutate}=useMutation(loginUser)
+  const {mutate,isLoading}=useMutation(loginUser)
 
   const onSubmit=(data:any)=>{
     try{
       mutate(data);
       
-      console.log("HR loggedin successfully!");
+      toast.success("HR loggedin successfully!");
     }
     catch(error){
       console.log("this is the error",error)
@@ -85,7 +88,9 @@ const UserLogin = () => {
           </div>
 
           <button className="bg-[#307730] w-full text-white self-center py-[10px] rounded-lg text-[16px]">
-            Sign Up
+          {
+            isLoading ? <p className="my-auto"> <BeatLoader color="#fff" /></p> : <p>Sign In</p>
+            }
           </button>
           <Link to="/register" className="text-[#6c6c6c] -[center] flex gap-1">
             don't have an acount? <p className="text-[#307730]">please register</p>

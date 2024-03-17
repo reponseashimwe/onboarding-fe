@@ -12,6 +12,7 @@ import PersonalInfo from "../components/forms/PersonalInfo";
 import ProfessionalInfo from "../components/forms/ProfessionalInfo";
 import EmployeeDocs from "../components/forms/EmployeeDocs";
 import AccountAccess from "../components/forms/AccountAccess";
+import CvInfoGenerator from "../components/forms/UploadCvForm";
 
 const Router = createBrowserRouter([
     {
@@ -30,7 +31,8 @@ const Router = createBrowserRouter([
         {path:"attendance",element:<Attendance/>},
         {path:"addEmployee",element:<AddEmployeePage/>,
       children:[
-        {path:"",element:<PersonalInfo/>},
+        {path:"",element:<CvInfoGenerator/>},
+        {path:"personalinfo",element:<PersonalInfo/>},
         {path:"professionalinfo",element:<ProfessionalInfo/>},
         {path:"employeeDocs",element:<EmployeeDocs/>},
         {path:"accountaccess",element:<AccountAccess/>}
