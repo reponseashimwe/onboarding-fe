@@ -1,6 +1,11 @@
 import { jwtDecode } from "jwt-decode";
+interface UserInfo {
+  name: string;
+  isHR: boolean;
+  // Add any other properties you expect to be present in the user object
+}
 
-const getUserInfo = () => {
+const getUserInfo = (): UserInfo | null => {
   const token = localStorage.getItem('token');
   try {
     //@ts-ignore

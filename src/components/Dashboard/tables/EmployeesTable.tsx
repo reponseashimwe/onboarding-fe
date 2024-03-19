@@ -1,3 +1,7 @@
+import view from "../../../assets/viewicon.svg"
+import edit from "../../../assets/editicon.svg"
+import del from "../../../assets/deleteicon.svg"
+
 const EmployeesTable = () => {
   return (
 <div className="overflow-x-auto">
@@ -53,8 +57,10 @@ const EmployeesTable = () => {
         <td>
             Parmanent
         </td>
-        <td>
-            edit/view/delete
+        <td className="flex items-center justify-between pt-5">
+          <img src={view} alt="" />
+          <img src={del} alt="" />
+          <img src={edit} alt="" />
         </td>
       </tr>
       {/* row 2 */}
@@ -90,8 +96,10 @@ const EmployeesTable = () => {
         <td>
             Permanent
         </td>
-        <td>
-            edit/view/delete
+        <td className="flex items-center justify-between pt-5">
+          <img src={view} alt="" />
+          <img src={del} alt="" />
+          <img src={edit} alt="" />
         </td>
       </tr>
       {/* row 3 */}
@@ -127,8 +135,10 @@ const EmployeesTable = () => {
         <td>
             Permanent
         </td>
-        <td>
-            edit/view/delete
+        <td className="flex items-center justify-between pt-5">
+          <img src={view} alt="" />
+          <img src={del} alt="" />
+          <img src={edit} alt="" />
         </td>
       </tr>
       {/* row 4 */}
@@ -164,8 +174,10 @@ const EmployeesTable = () => {
         <td>
             Permanent
         </td>
-        <td>
-            edit/view/delete
+        <td className="flex items-center justify-between pt-5">
+          <img src={view} alt="" />
+          <img src={del} alt="" />
+          <img src={edit} alt="" />
         </td>
       </tr>
     </tbody>
@@ -183,8 +195,12 @@ const EmployeesTable = () => {
         <th></th>
       </tr>
     </tfoot>
-    
   </table>
+  <div className=" flex items-center justify-center">
+     <button className="join-item btn btn-outline">Previous page</button>
+     <h1>------</h1>
+     <button className="join-item btn btn-outline">Next   page</button>
+    </div>
 </div>
   )
 }

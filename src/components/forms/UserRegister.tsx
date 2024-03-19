@@ -10,6 +10,7 @@ import { RegisterSchema,SignUpSchemaType } from "../validations/user";
 import toast, { Toaster } from "react-hot-toast";
 import { BeatLoader } from "react-spinners";
 import { useNavigate } from "react-router-dom";
+import illustration1 from "../../assets/onboarding002.svg"
   
 export const getErrorMsg = (error:any) => {
   return (error.message);
@@ -44,7 +45,7 @@ const UserRegister = () => {
       const user=await registerHr(data);
       if(user.status===200){
         toast.success("HR created successfully!!")
-        navigate("/login")
+        window.location.href="/login"
       }
     } catch (error) {
       console.log(error)
@@ -56,7 +57,7 @@ const UserRegister = () => {
   return (
     <div className="flex  m-[0] justify-between font-jost overflow-hidden xs:flex-col">
       <div className="w-[50vw] bg-[#307730] h-[100vh] flex items-center justify-center xs:hidden">
-        {/* <img className=" " src={illustrator1} alt="" /> */}
+        <img className="w-[70%]" src={illustration1} alt="" />
       </div>
       <div className=" h-screen flex items-center flex-col xs:w-screen">
       {/* {isError && <p>Error creating post</p>} */}
@@ -64,7 +65,7 @@ const UserRegister = () => {
           onSubmit={ handleSubmit(onSubmit)}
           className="px-5 xs:w-[80vw] xs:mx-auto w-[30vw] p-[5px] rounded-md h-[80%] mr-[100px] self-start relative top-[-10px]"
         >
-          <div className="flex flex-col -space-y-px rounded-md shadow-sm ">
+          <div className="flex flex-col -space-y-px rounded-md  shadow-sm ">
             <div className="flex flex-col gap-8 p-[20px]">
               <h1 className="font-bold text-center text-[24px] ">
                 Register Now

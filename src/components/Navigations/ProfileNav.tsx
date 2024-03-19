@@ -13,10 +13,10 @@ const ProfileNav = () => {
     <nav className="py-3 border-b-[1px] border-[#d8d6d6]">
       <ul className="flex justify-around items-center">
         <li>
-          <NavLink to="/dashboard/addEmployee/personalinfo" className="flex flex-col items-center" style={activeLinkStyle}>
+          <div className="flex flex-col items-center" style={activeLinkStyle}>
             <img src={profile} alt="Profile" className="h-5 w-5" />
             <span className="text-black">Personal Information</span>
-          </NavLink>
+          </div>
         </li>
         <li>
           <NavLink to="/dashboard/addEmployee/professionalinfo" className="flex flex-col items-center" style={activeLinkStyle}>

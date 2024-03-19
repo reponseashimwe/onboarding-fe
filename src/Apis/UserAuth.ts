@@ -16,10 +16,9 @@ export const loginUser = async (userData:any) => {
       const response = await customAxios.post("/auth/login", userData);
       const token  = response.data.accessToken;
       localStorage.setItem("token", token); 
-      toast.success("user logged in successfully")
-      return response.data;
+      return response;
     } catch (error:any) {
-
+      console.log("error==",error)
         if (error.response && error.response.data) {
             toast.error(error.response.data.error);
             return error.response.data;

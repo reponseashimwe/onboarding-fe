@@ -1,146 +1,113 @@
-import InputField from "../../helpers/InputField"
+import { useEffect } from "react";
+import InputField from "../../helpers/InputField";
+import { useForm,SubmitHandler } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { EmployeeSchemaType, employeeSchema } from "../validations/user";
 
+type ProfessionalInfoProps = {
+  onSubmit: SubmitHandler<any>; // Adjust the type of onSubmit as needed
+  formData: any; 
+};
 
-const ProfessionalInfo = () => {
-    return (
-  <div className="mx-auto w-[80%] font-jost pt-4">
-        <form
-          className=" flex flex-col w-full justify-center pl-[10%]"
-          // onSubmit={handleSubmit(onSubmit)}
-          encType="multipart/form-data"
-        >
-          {/* {loading ? ( 
-            <div className="flex justify-center items-center w-full h-[60vh]">
-          <CircleLoader color="#5157E0" />
-          </div>
-          ) : ( */}
-            <div className="rounded-lg p-[5px]">
-              <div className="flex justify-between items-center">
-                <div className="w-[46%]">
-                  <InputField
-                    type="text"
-                    placeholder="employee ID"
-                    className="w-full rounded-md px-2 py-3 placeholder:text-gray-400 sm:text-[12px] focus:bg-[#EAF0F7] bg-[#EEF0F5]"
-                    // {...register("preferredLanguage")}
-                    // error={errors?.preferredLanguage}
-                  />
-                </div>
-                <div className="w-[46%]">
-                  <InputField
-                    type="text"
-                    placeholder="username"
-                    className="w-full rounded-md px-2 py-3 placeholder:text-gray-400 sm:text-[12px] my-2 focus:bg-[#EAF0F7] bg-[#EEF0F5]"
-                    // {...register("preferredCurrency")}
-                    // error={errors?.preferredCurrency}
-                  />
-                </div>
+const ProfessionalInfo:React.FC<ProfessionalInfoProps> = ({onSubmit,formData}) => {
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors }
+  } = useForm<any>({ 
+    resolver: zodResolver(employeeSchema),
+    defaultValues: formData.professionalInfo
+  });
+  useEffect(() => {
+    // Reset form data when formData prop changes
+    reset(formData);
+  }, [formData]);
+
+  return (
+    <section className="mx-auto w-[80%] font-jost pt-4">
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <div className="flex flex-col w-full justify-center pl-[10%]">
+          <div className="rounded-lg p-[5px]">
+            <div className="flex justify-between items-center">
+              <div className="w-[46%]">
+                <InputField
+                  type="text"
+                  placeholder="Employee ID"
+                  className="w-full rounded-md px-2 py-3 placeholder:text-gray-400 sm:text-[12px] focus:bg-[#EAF0F7] bg-[#EEF0F5]"
+                  {...register("employmentDetails.employeeID")}
+                  // error={errors?.employmentDetails?.employeeID?.message}
+                />
               </div>
-              <div className="flex w-full justify-between">
-                <div className="w-[46%]">
-                  <select
-                    id="employeetype"
-                    name="employeetype"
-                    className="w-full rounded-md px-2 py-3 placeholder:text-gray-400 sm:text-[12px] my-2 focus:bg-[#EAF0F7] bg-[#EEF0F5]"
-                    // {...register("gender")}
-                    // error={errors?.gender}
-                  >
-                    <option value="male">type01</option>
-                    <option value="female">type02</option>
-                    <option value="other">other</option>
-                  </select>
-                </div>
-                <div className="w-[46%]">
-                  <InputField
-                    type="email"
-                    placeholder="Email address"
-                    className="w-full rounded-md px-2 py-3 placeholder:text-gray-400 sm:text-[12px] my-2 focus:bg-[#EAF0F7] bg-[#EEF0F5]"
-                    // {...register("DOB")}
-                    // error={errors?.DOB}
-                  />
-                </div>
-              </div>
-              <div className="flex w-full justify-between">
-                <div className="w-[46%]">
-                  <select
-                    id="organizations"
-                    name="departments"
-                    className="w-full rounded-md px-2 py-3 placeholder:text-gray-400 sm:text-[12px] my-2 focus:bg-[#EAF0F7] bg-[#EEF0F5]"
-                    // {...register("gender")}
-                    // error={errors?.gender}
-                  >
-                    <option value="male">Department001</option>
-                    <option value="female">Department002</option>
-                    <option value="other">Other</option>
-                  </select>
-                </div>
-                <div className="w-[46%]">
-                  <InputField
-                    type="text"
-                    placeholder="enter designation"
-                    className="w-full rounded-md px-2 py-3 placeholder:text-gray-400 sm:text-[12px] my-2 focus:bg-[#EAF0F7] bg-[#EEF0F5]"
-                    // {...register("DOB")}
-                    // error={errors?.DOB}
-                  />
-                </div>
-              </div>
-              <div className="flex w-full justify-between">
-                <div className="w-[46%]">
-                  <select
-                    id="workingdays"
-                    name="workingdays"
-                    className="w-full rounded-md px-2 py-3 placeholder:text-gray-400 sm:text-[12px] my-2 focus:bg-[#EAF0F7] bg-[#EEF0F5]"
-                    // {...register("gender")}
-                    // error={errors?.gender}
-                  >
-                    <option value="male">monday to friday</option>
-                    <option value="female">monday to sunday</option>
-                    <option value="other">Other</option>
-                  </select>
-                </div>
-                <div className="w-[46%]">
-                  <InputField
-                    type="date"
-                    placeholder="select joining dates"
-                    className="w-full rounded-md px-2 py-3 placeholder:text-gray-400 sm:text-[12px] my-2 focus:bg-[#EAF0F7] bg-[#EEF0F5]"
-                    // {...register("DOB")}
-                    // error={errors?.DOB}
-                  />
-                </div>
-              </div>
-              <div className="w-[100%]">
-                  <select
-                    id="officeLOcation"
-                    name="office"
-                    className="w-full rounded-md px-2 py-3 placeholder:text-gray-400 sm:text-[12px] my-2 focus:bg-[#EAF0F7] bg-[#EEF0F5]"
-                    // {...register("gender")}
-                    // error={errors?.gender}
-                  >
-                    <option value="male">officeLocation001</option>
-                    <option value="female">officeLocation002</option>
-                    <option value="other">Other</option>
-                  </select>
-                </div>
-              <div className="w-[30%]  flex justify-between">
-                <button
-                  // onClick={() => reset()}
-                  type="button"
-                  className="bg-[white] w-[100px] h-[40px] text-[#307730] border-[#307730] rounded-md border-[1px]"
-                >
-                  Cancel
-                </button>
-                <button
-                  type="submit"
-                  className="bg-[#307730] text-[white] w-[100px] h-[40px] rounded-md flex items-center justify-center "
-                >
-                  {/* {loading1 ? <Loader /> : "Save"}  */}
-                  Save
-                </button>
+              <div className="w-[46%]">
+                <InputField
+                  type="text"
+                  placeholder="Designation"
+                  className="w-full rounded-md px-2 py-3 placeholder:text-gray-400 sm:text-[12px] focus:bg-[#EAF0F7] bg-[#EEF0F5]"
+                  {...register("employmentDetails.designation")}
+                  // error={errors?.employmentDetails?.designation?.message}
+                />
               </div>
             </div>
-          {/* )} */}
-        </form>
-      </div>
-    )
-}
+            <div className="flex w-full justify-between">
+              <div className="w-[46%]">
+                <InputField
+                  type="text"
+                  placeholder="Working Days"
+                  className="w-full rounded-md px-2 py-3 placeholder:text-gray-400 sm:text-[12px] focus:bg-[#EAF0F7] bg-[#EEF0F5]"
+                  {...register("employmentDetails.workingDays")}
+                  // error={errors?.employmentDetails?.workingDays?.message}
+                />
+              </div>
+              <div className="w-[46%]">
+                <InputField
+                  type="text"
+                  placeholder="Office Location"
+                  className="w-full rounded-md px-2 py-3 placeholder:text-gray-400 sm:text-[12px] focus:bg-[#EAF0F7] bg-[#EEF0F5]"
+                  {...register("employmentDetails.officeLocation")}
+                  // error={errors?.employmentDetails?.officeLocation?.message}
+                />
+              </div>
+            </div>
+            <div className="flex w-full justify-between">
+              <div className="w-[46%]">
+                <InputField
+                  type="date"
+                  placeholder="Joining Date"
+                  className="w-full rounded-md px-2 py-3 placeholder:text-gray-400 sm:text-[12px] focus:bg-[#EAF0F7] bg-[#EEF0F5]"
+                  {...register("employmentDetails.joiningDate")}
+                  // error={errors?.employmentDetails?.joiningDate?.message}
+                />
+              </div>
+              <div className="w-[46%]">
+                <InputField
+                  type="text"
+                  placeholder="Salary"
+                  className="w-full rounded-md px-2 py-3 placeholder:text-gray-400 sm:text-[12px] focus:bg-[#EAF0F7] bg-[#EEF0F5]"
+                  {...register("employmentDetails.salary")}
+                  // error={errors?.employmentDetails?.salary?.message}
+                />
+              </div>
+              <div className="w-[30%]  flex justify-between">
+          <button
+            type="button"
+            className="bg-[white] w-[100px] h-[40px] text-[#307730] border-[#307730] rounded-md border-[1px]"
+          >
+            Cancel
+          </button>
+          <button
+            type="submit"
+            className="bg-[#307730] text-[white] w-[100px] h-[40px] rounded-md flex items-center justify-center "
+          >
+            Next
+          </button>
+        </div>
+            </div>
+          </div>
+        </div>
+      </form>
+    </section>
+  );
+};
 
-export default ProfessionalInfo
+export default ProfessionalInfo;

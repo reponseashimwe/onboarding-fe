@@ -6,7 +6,7 @@ import TopNavbar from '../Navigations/TopNavbar';
 const DashboardLayout: React.FC = () => {
   return (
     <div className="h-screen grid grid-cols-12 grid-rows-12">
-      <div className="col-start-1 col-end-2 sticky top-0">
+      <div className="col-start-1 col-end-2 fixed top-0">
         <SideBar />
       </div>
       

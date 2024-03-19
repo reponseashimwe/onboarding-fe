@@ -6,13 +6,17 @@ import { loginUser } from "../../Apis/UserAuth";
 import {useForm} from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod";
 import { loginSchema,SignInSchemaType } from "../validations/user";
-import { useMutation } from "react-query";
 import { BeatLoader } from "react-spinners";
-import toast from "react-hot-toast";
+import toast,{Toaster} from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
+import illustration1 from "../../assets/onboarding002.svg"
 
 
 const UserLogin = () => {
   const [pwdOpenEye, setPwdOpenEye] = useState(false);
+  const [loading,setLoading]=useState(false);
+  const navigate=useNavigate();
+
 
   const pwdToggle = () => {
     setPwdOpenEye(!pwdOpenEye);
@@ -22,22 +26,29 @@ const UserLogin = () => {
     handleSubmit,
     formState: { errors }
   } = useForm<SignInSchemaType>({ resolver: zodResolver(loginSchema) });
-  const {mutate,isLoading}=useMutation(loginUser)
+  // const {mutate,isLoading}=useMutation(loginUser)
 
-  const onSubmit=(data:any)=>{
+  const onSubmit=async(data:any)=>{
+    setLoading(true)
     try{
-      mutate(data);
-      
-      toast.success("HR loggedin successfully!");
+      const user=await loginUser(data);
+      console.log("user===",user);
+      if(user.status===200){
+        toast.success("user logged in successfully!!");
+        window.location.href='/dashboard';
+      }
     }
     catch(error){
       console.log("this is the error",error)
+    }
+    finally{
+      setLoading(false);
     }
   }
   return (
     <div className="flex  items-center  m-[0] justify-between font-jost overflow-hidden xs:flex-col">
     <div className="w-[50vw] bg-[#307730] h-[100vh] flex items-center justify-center xs:hidden">
-      {/* <img className=" " src={illustrator1} alt="" /> */}
+      <img className=" " src={illustration1} alt="" />
     </div>
     <div className=" h-[90vh] flex items-center flex-col xs:w-screen">
       <form
@@ -89,7 +100,7 @@ const UserLogin = () => {
 
           <button className="bg-[#307730] w-full text-white self-center py-[10px] rounded-lg text-[16px]">
           {
-            isLoading ? <p className="my-auto"> <BeatLoader color="#fff" /></p> : <p>Sign In</p>
+            loading ? <p className="my-auto"> <BeatLoader color="#fff" /></p> : <p>Sign In</p>
             }
           </button>
           <Link to="/register" className="text-[#6c6c6c] -[center] flex gap-1">
@@ -97,6 +108,10 @@ const UserLogin = () => {
           </Link>
         </div>
       </form>
+      <Toaster
+        position="top-right"
+        reverseOrder={false}
+      />
       {/* <div className="mt-[70px] mr-[20%]">
         <GoogleLogin />
       </div> */}

@@ -4,15 +4,17 @@ import Footer from "../Navigations/Footer"
 
 const AppLayout = () => {
   return (
-    <>
-    <div className="sticky top-0 z-10">
+    <div className="layout">
+    <div className="fixed w-full top-0 z-10">
     <NavBar/>
     </div>
-    <main className="h-fit">
+    <main className="h-screen m-auto">
         <Outlet/>
     </main>
-    <Footer/>
-    </>
+    <div className="z-10 flex justify-center fixed items-center top-[80%] left-0 right-0 xs:w-[100%]">
+        <Footer />
+      </div>
+    </div>
   )
 }
 

@@ -1,10 +1,12 @@
-import { RouterProvider } from "react-router-dom"
-import Router from "./routes/Router"
+import { BrowserRouter as Router } from 'react-router-dom'; 
+import RouterConfig from "./routes/Router"
 
 function App() {
   return (
     <div className="font-Jost">
-    <RouterProvider router={Router}/>
+      <Router>
+        <RouterConfig />
+      </Router>
     </div>
   )
 }

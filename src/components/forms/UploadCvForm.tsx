@@ -6,7 +6,7 @@ const CvInfoGenerator = () => {
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const uploadedFile = event.target.files?.[0]; // Accessing files array safely
-    setFile(uploadedFile || null); // Set file to null if uploadedFile is undefined
+    setFile(uploadedFile || null); 
   };
 
   const handleUpload = async () => {
@@ -15,11 +15,6 @@ const CvInfoGenerator = () => {
         console.error("No file selected.");
         return;
       }
-
-      // const formData = new FormData();
-      // formData.append("pdfFile", file);
-
-      // Call the processResume service to extract information from the uploaded file
       const response = await processResume(file);
 
       console.log("Extracted information:", response.data);

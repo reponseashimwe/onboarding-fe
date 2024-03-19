@@ -22,6 +22,9 @@ const SideBar= () => {
             <SideBarLink to="/dashboard/settings" label="Settings" icon={dashboard} />
           </ul>
         </nav>
+        <h1 className="bg-[gray] text-white px-4 py-2 text-center hover:shadow-2xl hover:bg-white hover:text-[#2a2929] hover:cursor-pointer">
+          logout
+        </h1>
       </div>
     );
   };
