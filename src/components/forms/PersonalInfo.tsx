@@ -1,20 +1,16 @@
 import { useEffect } from "react";
-import Avatar from "../../assets/avatar.svg";
 import InputField from "../../helpers/InputField";
-import { AiOutlineEyeInvisible, AiOutlineEye } from "react-icons/ai";
-import { useState } from "react";
-import { useForm,SubmitHandler } from "react-hook-form";
+import { useForm} from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { EmployeeSchemaType, employeeSchema } from "../validations/user";
-import { Link } from "react-router-dom";
 
 interface PersonalInfoProps {
-  onSubmit: SubmitHandler<EmployeeSchemaType>;
+  onNext: (data: EmployeeSchemaType) => void;
   formData: EmployeeSchemaType;
 }
 
 
-const PersonalInfo:React.FC<PersonalInfoProps> = ({onSubmit,formData}) => {
+const PersonalInfo:React.FC<PersonalInfoProps> = ({onNext,formData}) => {
   const {
     register,
     handleSubmit,
@@ -25,19 +21,19 @@ const PersonalInfo:React.FC<PersonalInfoProps> = ({onSubmit,formData}) => {
     defaultValues: formData
   });
 
-  // useEffect(() => {
-  //   // Reset form data when formData prop changes
-  //   console.log(formData)
-  //   reset(formData);
-  // }, [formData]);
-  console.log(formData)
+  useEffect(() => {
+    console.log(formData)
+    reset(formData);
+  }, [formData]);
+  const onSubmit = (data: EmployeeSchemaType) => {
+    onNext(data);
+  };
 
   return (
     <section className="mx-auto w-[80%] font-jost pt-4">
       <form
         className="flex flex-col w-full justify-center pl-[10%]"
         onSubmit={handleSubmit(onSubmit)}
-        // encType="multipart/form-data"
       >
         <div className="rounded-lg p-[5px]">
           <div className="flex justify-between">
@@ -109,22 +105,50 @@ const PersonalInfo:React.FC<PersonalInfoProps> = ({onSubmit,formData}) => {
                 {...register("personalDetails.nationality")}
                 // error={errors?.personalDetails?.nationality}
               />
+              </div>
+              <div className="w-[43%]">
+              <InputField
+                type="text"
+                placeholder="telephone number"
+                className="w-full rounded-md px-2 py-3 placeholder:text-gray-400 sm:text-[12px] focus:bg-[#EAF0F7] bg-[#EEF0F5]"
+                {...register("contactDetails.phoneNumber")}
+                // error={errors?.personalDetails?.nationality}
+              />
+              </div>
             </div>
-          </div>
+            <div className="flex justify-between gap-2">
+            <div className="w-[43%]">
+              <InputField
+                type="text"
+                placeholder="enter country name"
+                className="w-full rounded-md px-2 py-3 placeholder:text-gray-400 sm:text-[12px] focus:bg-[#EAF0F7] bg-[#EEF0F5]"
+                {...register("address.country")}
+                // error={errors?.personalDetails?.nationality}
+              />
+              </div>
+              <div className="w-[43%]">
+              <InputField
+                type="text"
+                placeholder="enter city name"
+                className="w-full rounded-md px-2 py-3 placeholder:text-gray-400 sm:text-[12px] focus:bg-[#EAF0F7] bg-[#EEF0F5]"
+                {...register("address.city")}
+                // error={errors?.personalDetails?.nationality}
+              />
+              </div>
+              <div className="w-[43%]">
+              <InputField
+                type="text"
+                placeholder="other cities"
+                className="w-full rounded-md px-2 py-3 placeholder:text-gray-400 sm:text-[12px] focus:bg-[#EAF0F7] bg-[#EEF0F5]"
+                {...register("address.otherAddress")}
+                // error={errors?.personalDetails?.nationality}
+              />
+              </div>
+            </div>
+        <div className="flex justify-between mt-4">
+        
+          <button type="submit" className="bg-green-500 text-white py-2 px-4 rounded">Next</button>
         </div>
-        <div className="w-[30%]  flex justify-between">
-          <button
-            type="button"
-            className="bg-[white] w-[100px] h-[40px] text-[#307730] border-[#307730] rounded-md border-[1px]"
-          >
-            Cancel
-          </button>
-          <button
-            type="submit"
-            className="bg-[#307730] text-[white] w-[100px] h-[40px] rounded-md flex items-center justify-center "
-          >
-            Next
-          </button>
         </div>
       </form>
     </section>

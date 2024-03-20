@@ -1,31 +1,31 @@
 import { useEffect } from 'react';
 import InputField from '../../helpers/InputField';
-import { useForm, SubmitHandler, useFieldArray } from "react-hook-form";
+import { useForm, useFieldArray } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { EmployeeSchemaType, employeeSchema } from "../validations/user";
 
 type OtherInfoProps = {
-  onSubmit: SubmitHandler<any>; // Adjust the type of onSubmit as needed
+  onNext: (data: EmployeeSchemaType) => void;
   formData: any; 
+  onBack: () => void; 
 };
 
-const OtherInfo:React.FC<OtherInfoProps>= ({onSubmit,formData}) => {
+const OtherInfo:React.FC<OtherInfoProps>= ({onNext,formData,onBack}) => {
   const {
     register,
     handleSubmit,
     reset,
     formState: { errors },
-    control // Add control from useForm to useFieldArray
+    control 
   } = useForm<any>({
      resolver: zodResolver(employeeSchema),
      defaultValues: formData.otherInfo
     });
     useEffect(() => {
-      // Reset form data when formData prop changes
+
       reset(formData);
     }, [formData]);
 
-  // useFieldArray for arrays or arrays of objects
   const { fields: educationalBackgroundFields, append: appendEduBackground, remove: removeEduBackground } = useFieldArray({
     control,
     name: "educationalBackground"
@@ -41,13 +41,32 @@ const OtherInfo:React.FC<OtherInfoProps>= ({onSubmit,formData}) => {
     name: "socialMediaProfiles"
   });
 
+  const { fields: skillsFields, append: appendSkill, remove: removeSkill } = useFieldArray({
+    control,
+    name: 'skills',
+  });
+
+  const { fields: certificationsFields, append: appendCertification, remove: removeCertification } = useFieldArray({
+    control,
+    name: 'certifications',
+  });
+
+  const { fields: languagesFields, append: appendLanguage, remove: removeLanguage } = useFieldArray({
+    control,
+    name: 'languages',
+  });
+
+  const onSubmit = (data: EmployeeSchemaType) => {
+    console.log("data",data)
+    onNext(data);
+  };
+
   return (
     <section className="mx-auto w-[80%] font-jost pt-4">
     <form className="flex flex-col w-full justify-center pl-[10%]"
     onSubmit={handleSubmit(onSubmit)}
     >
       <div className="rounded-lg p-[5px]">
-        {/* Educational Background */}
         <div className="mb-4 flex flex-wrap">
           <h2 className="text-lg font-bold mb-2 w-full">Educational Background</h2>
           {educationalBackgroundFields.map((eduBackground, index) => (
@@ -76,7 +95,6 @@ const OtherInfo:React.FC<OtherInfoProps>= ({onSubmit,formData}) => {
           <button type="button" onClick={() => appendEduBackground({} as EmployeeSchemaType['educationalBackground'][0])}>Add Educational Background</button>
         </div>
 
-        {/* Experience */}
         <div className="mb-4 flex flex-wrap">
           <h2 className="text-lg font-bold mb-2 w-full">Experience</h2>
           {experienceFields.map((experience, index) => (
@@ -111,7 +129,6 @@ const OtherInfo:React.FC<OtherInfoProps>= ({onSubmit,formData}) => {
           <button type="button" onClick={() => appendExperience({} as EmployeeSchemaType['experience'][0])}>Add Experience</button>
         </div>
 
-        {/* Social Media Profiles */}
         <div className="mb-4 ">
           <h2 className="text-lg font-bold mb-2">Social Media Profiles</h2>
           {socialMediaProfilesFields.map((socialMediaProfile, index) => (
@@ -133,7 +150,55 @@ const OtherInfo:React.FC<OtherInfoProps>= ({onSubmit,formData}) => {
           ))}
           <button type="button" onClick={() => appendSocialMediaProfile({} as EmployeeSchemaType['socialMediaProfiles'][0])}>Add Social Media Profile</button>
         </div>
-        {/* Bank Info */}
+
+        <div className="mb-4">
+          <h2 className="text-lg font-bold mb-2">Skills</h2>
+          {skillsFields.map((skill, index) => (
+            <div key={skill.id} className="flex gap-4 w-full">
+              <InputField
+                type="text"
+                placeholder="Skill"
+                className="w-full rounded-md placeholder:text-gray-400 sm:text-[12px] my-2 focus:bg-[#EAF0F7] bg-[#EEF0F5]"
+                {...register(`skills.${index}`)}
+              />
+              <button type="button" onClick={() => removeSkill(index)}>Remove</button>
+            </div>
+          ))}
+          <button type="button" onClick={() => appendSkill('')}>Add Skill</button>
+        </div>
+
+         <div className="mb-4">
+          <h2 className="text-lg font-bold mb-2">Certifications</h2>
+          {certificationsFields.map((certification, index) => (
+            <div key={certification.id} className="flex gap-4 w-full">
+              <InputField
+                type="text"
+                placeholder="Certification"
+                className="w-full rounded-md placeholder:text-gray-400 sm:text-[12px] my-2 focus:bg-[#EAF0F7] bg-[#EEF0F5]"
+                {...register(`certifications.${index}`)}
+              />
+              <button type="button" onClick={() => removeCertification(index)}>Remove</button>
+            </div>
+          ))}
+          <button type="button" onClick={() => appendCertification('')}>Add Certification</button>
+        </div>
+
+        <div className="mb-4">
+          <h2 className="text-lg font-bold mb-2">Languages</h2>
+          {languagesFields.map((language, index) => (
+            <div key={language.id} className="flex gap-4 w-full">
+              <InputField
+                type="text"
+                placeholder="Language"
+                className="w-full rounded-md placeholder:text-gray-400 sm:text-[12px] my-2 focus:bg-[#EAF0F7] bg-[#EEF0F5]"
+                {...register(`languages.${index}`)}
+              />
+              <button type="button" onClick={() => removeLanguage(index)}>Remove</button>
+            </div>
+          ))}
+          <button type="button" onClick={() => appendLanguage('')}>Add Language</button>
+        </div>
+
         <div className="mb-4">
             <h2 className="text-lg font-bold mb-2">Bank Info</h2>
             <InputField
@@ -159,23 +224,11 @@ const OtherInfo:React.FC<OtherInfoProps>= ({onSubmit,formData}) => {
             />
           </div>
 
-        {/* Remaining Fields */}
-        {/* Add remaining fields here similarly using InputField and register */}
+          <div className="flex justify-between mt-4">
 
-        {/* Form Actions */}
-        <div className="flex justify-between">
-          <button
-            type="button"
-            className="bg-white text-[#307730] border-[#307730] border rounded-md px-4 py-2"
-          >
-            Cancel
-          </button>
-          <button
-            type="submit"
-            className="bg-[#307730] text-[white] w-[100px] h-[40px] rounded-md flex items-center justify-center"
-          >
-            Save
-          </button>
+          <button type="button" onClick={onBack} className="bg-black text-white py-2 px-4 rounded">Back</button>
+
+          <button type="submit" className="bg-green-500 text-white py-2 px-4 rounded">Submit Form</button>
         </div>
       </div>
     </form>

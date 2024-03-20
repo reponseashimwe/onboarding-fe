@@ -4,6 +4,10 @@ import SideBarLink from "../../helpers/SideBarLink";
 import employees from "../../assets/employees.svg"
 
 const SideBar= () => {
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    window.location.href="/login";
+  };
     return (
       <div className="flex flex-col h-screen w-[13rem] bg-[#ffffff] shadow-xl rounded-e-xl">
         <div className="p-4">
@@ -22,9 +26,9 @@ const SideBar= () => {
             <SideBarLink to="/dashboard/settings" label="Settings" icon={dashboard} />
           </ul>
         </nav>
-        <h1 className="bg-[gray] text-white px-4 py-2 text-center hover:shadow-2xl hover:bg-white hover:text-[#2a2929] hover:cursor-pointer">
+        <button onClick={handleLogout} className="bg-[gray] text-white px-4 py-2 text-center hover:shadow-2xl hover:bg-white hover:text-[#2a2929] hover:cursor-pointer">
           logout
-        </h1>
+        </button>
       </div>
     );
   };

@@ -1,4 +1,4 @@
-import { useRoutes, Navigate } from 'react-router-dom';
+import { useRoutes } from 'react-router-dom';
 import { useState,useEffect } from 'react';
 import AppLayout from '../components/layouts/AppLayout';
 import Home from '../components/Home';
@@ -9,10 +9,6 @@ import Dashboard from '../components/Dashboard/Dashboard';
 import EmployesList from '../components/Dashboard/EmployesList';
 import Attendance from '../components/Dashboard/Attendance';
 import AddEmployeePage from '../pages/AddEmployeePage';
-import PersonalInfo from '../components/forms/PersonalInfo';
-import ProfessionalInfo from '../components/forms/ProfessionalInfo';
-import EmployeeDocs from '../components/forms/EmployeeDocs';
-import AccountAccess from '../components/forms/OtherInfo';
 import CvInfoGenerator from '../components/forms/UploadCvForm';
 import UserAuth from '../utils/userAuth';
 import { RingLoader } from 'react-spinners';
@@ -40,21 +36,15 @@ const Router = () => {
         { path: '', element: <Dashboard /> },
         { path: 'all-employees', element: <EmployesList /> },
         { path: 'attendance', element: <Attendance /> },
-        {
-          path: 'addEmployee',
-          element: <AddEmployeePage />,
-          children: [
-            { path: '', element: <CvInfoGenerator /> },
-          ],
-        },
+        {path: 'extractinfo',
+        element: < CvInfoGenerator/>},
+        {path:"addEmployee",element:<AddEmployeePage/>}
       ],
     },
   ]);
 
-  // Loading state
   const [isLoading, setIsLoading] = useState(true);
 
-  // Simulate loading delay
   useEffect(() => {
     const loadingTimer = setTimeout(() => {
       setIsLoading(false);
@@ -63,12 +53,10 @@ const Router = () => {
     return () => clearTimeout(loadingTimer);
   }, []);
 
-  // Render loading indicator
   if (isLoading) {
     return <div className='w-screen h-screen flex flex-col items-center justify-center'><RingLoader color="#307730"/></div>;
   }
 
-  // Render routes
   return routes;
 };
 

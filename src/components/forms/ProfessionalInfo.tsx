@@ -1,15 +1,16 @@
 import { useEffect } from "react";
 import InputField from "../../helpers/InputField";
-import { useForm,SubmitHandler } from "react-hook-form";
+import { useForm} from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { EmployeeSchemaType, employeeSchema } from "../validations/user";
 
 type ProfessionalInfoProps = {
-  onSubmit: SubmitHandler<any>; // Adjust the type of onSubmit as needed
+  onNext: (data: EmployeeSchemaType) => void;
   formData: any; 
+  onBack: () => void; 
 };
 
-const ProfessionalInfo:React.FC<ProfessionalInfoProps> = ({onSubmit,formData}) => {
+const ProfessionalInfo:React.FC<ProfessionalInfoProps> = ({onNext,formData,onBack}) => {
   const {
     register,
     handleSubmit,
@@ -20,9 +21,14 @@ const ProfessionalInfo:React.FC<ProfessionalInfoProps> = ({onSubmit,formData}) =
     defaultValues: formData.professionalInfo
   });
   useEffect(() => {
-    // Reset form data when formData prop changes
+
     reset(formData);
   }, [formData]);
+  
+  const onSubmit = (data: EmployeeSchemaType) => {
+    console.log("data",data)
+    onNext(data); 
+  };
 
   return (
     <section className="mx-auto w-[80%] font-jost pt-4">
@@ -69,7 +75,7 @@ const ProfessionalInfo:React.FC<ProfessionalInfoProps> = ({onSubmit,formData}) =
                 />
               </div>
             </div>
-            <div className="flex w-full justify-between">
+            <div className="flex w-full justify-between gap-2">
               <div className="w-[46%]">
                 <InputField
                   type="date"
@@ -88,21 +94,21 @@ const ProfessionalInfo:React.FC<ProfessionalInfoProps> = ({onSubmit,formData}) =
                   // error={errors?.employmentDetails?.salary?.message}
                 />
               </div>
-              <div className="w-[30%]  flex justify-between">
-          <button
-            type="button"
-            className="bg-[white] w-[100px] h-[40px] text-[#307730] border-[#307730] rounded-md border-[1px]"
-          >
-            Cancel
-          </button>
-          <button
-            type="submit"
-            className="bg-[#307730] text-[white] w-[100px] h-[40px] rounded-md flex items-center justify-center "
-          >
-            Next
-          </button>
+              <div className="w-[46%]">
+                <InputField
+                  type="text"
+                  placeholder="enter contract url"
+                  className="w-full rounded-md px-2 py-3 placeholder:text-gray-400 sm:text-[12px] focus:bg-[#EAF0F7] bg-[#EEF0F5]"
+                  {...register("contract")}
+                  // error={errors?.employmentDetails?.salary?.message}
+                />
+              </div>
+              </div>
+              <div className="flex justify-between mt-4">
+          <button type="button" onClick={onBack} className="bg-black text-white py-2 px-4 rounded">Back</button>
+          
+          <button type="submit" className="bg-green-500 text-white py-2 px-4 rounded">Next</button>
         </div>
-            </div>
           </div>
         </div>
       </form>

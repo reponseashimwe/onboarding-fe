@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 const EmployeesNavBar = () => {
   return (
     <div className="flex items-center justify-between p-4">
-      {/* Search input */}
+
       <div className="relative">
         <input
           type="search"
@@ -15,12 +15,10 @@ const EmployeesNavBar = () => {
         />
         <img src={search} alt="Search" className="absolute right-2 top-1/2 transform -translate-y-1/2 w-4 h-4" />
       </div>
-      
-      {/* Add employee button */}
+
       <div className="flex gap-3">
-      <button className="btn no-animation bg-[#307730] text-white"><Link to="/dashboard/addEmployee" className="flex gap-2 items-center justify-center">Add Employee <img src={add} alt="" /></Link></button>
+      <button className="btn no-animation bg-[#307730] text-white"><Link to="/dashboard/extractinfo" className="flex gap-2 items-center justify-center">Add Employee <img src={add} alt="" /></Link></button>
       
-      {/* Filter */}
       <div className="flex items-center">
         <img src={filter} alt="Filter" className="w-4 h-4 mr-1" />
         <span>Filter</span>

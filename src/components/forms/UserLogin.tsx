@@ -8,14 +8,12 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { loginSchema,SignInSchemaType } from "../validations/user";
 import { BeatLoader } from "react-spinners";
 import toast,{Toaster} from "react-hot-toast";
-import { useNavigate } from "react-router-dom";
 import illustration1 from "../../assets/onboarding002.svg"
 
 
 const UserLogin = () => {
   const [pwdOpenEye, setPwdOpenEye] = useState(false);
   const [loading,setLoading]=useState(false);
-  const navigate=useNavigate();
 
 
   const pwdToggle = () => {
@@ -26,7 +24,6 @@ const UserLogin = () => {
     handleSubmit,
     formState: { errors }
   } = useForm<SignInSchemaType>({ resolver: zodResolver(loginSchema) });
-  // const {mutate,isLoading}=useMutation(loginUser)
 
   const onSubmit=async(data:any)=>{
     setLoading(true)
@@ -50,7 +47,7 @@ const UserLogin = () => {
     <div className="w-[50vw] bg-[#307730] h-[100vh] flex items-center justify-center xs:hidden">
       <img className=" " src={illustration1} alt="" />
     </div>
-    <div className=" h-[90vh] flex items-center flex-col xs:w-screen">
+    <div className=" h-[90vh] flex items-center flex-col xs:w-screen justify-center">
       <form
         onSubmit={(event) => {
           handleSubmit(onSubmit)(event);

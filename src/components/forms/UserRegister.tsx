@@ -1,6 +1,5 @@
 import { Link } from "react-router-dom"
 import { useState } from "react";
-import { useMutation } from "react-query";
 import { useForm } from "react-hook-form";
 import { AiOutlineEyeInvisible, AiOutlineEye } from "react-icons/ai";
 import InputField from "../../helpers/InputField";
@@ -59,8 +58,7 @@ const UserRegister = () => {
       <div className="w-[50vw] bg-[#307730] h-[100vh] flex items-center justify-center xs:hidden">
         <img className="w-[70%]" src={illustration1} alt="" />
       </div>
-      <div className=" h-screen flex items-center flex-col xs:w-screen">
-      {/* {isError && <p>Error creating post</p>} */}
+      <div className=" h-screen flex items-center flex-col xs:w-screen justify-center overflow-y-scroll">
         <form
           onSubmit={ handleSubmit(onSubmit)}
           className="px-5 xs:w-[80vw] xs:mx-auto w-[30vw] p-[5px] rounded-md h-[80%] mr-[100px] self-start relative top-[-10px]"

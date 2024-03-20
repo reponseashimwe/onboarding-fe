@@ -1,124 +1,153 @@
 import { useEffect } from "react";
-import { DropzoneOptions, useDropzone } from "react-dropzone";
+import { DropzoneOptions, useDropzone, FileRejection } from "react-dropzone";
 import { useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import {employeeSchema,EmployeeSchemaType } from "../validations/user";
+import { employeeSchema, EmployeeSchemaType } from "../validations/user";
 import Avatar from "../../assets/upload.svg";
 
 type EmployeeDocsProps = {
-  onSubmit: SubmitHandler<any>; // Adjust the type of onSubmit as needed
-  formData: any; 
+  onNext: (data: EmployeeSchemaType) => void;
+  formData: any;
+  onBack: () => void; // Add a callback function for the "Back" button
 };
 
+type ImageField = "appointmentLetter" | "salarySlip" | "relievingLetter" | "experienceLetter";
 
-const EmployeeDocs:React.FC<EmployeeDocsProps>= ({onSubmit,formData}) => {
-  const [selectedImage, setSelectedImage] = useState<string | null>(null);
+const EmployeeDocs: React.FC<EmployeeDocsProps> = ({ onNext, formData, onBack }) => {
+  const [appointmentLetter, setAppointmentLetter] = useState<string | null>(null);
+  const [salarySlip, setSalarySlip] = useState<string | null>(null);
+  const [relievingLetter, setRelievingLetter] = useState<string | null>(null);
+  const [experienceLetter, setExperienceLetter] = useState<string | null>(null);
+
   const {
     register,
     handleSubmit,
     reset,
     formState: { errors }
-  } = useForm<any>({ 
+  } = useForm<any>({
     resolver: zodResolver(employeeSchema),
     defaultValues: formData.employeeDocs
   });
-
-  const onDrop: DropzoneOptions["onDrop"] = async (acceptedFiles) => {
+  //@ts-ignore
+  const onDrop: DropzoneOptions["onDrop"] = async (acceptedFiles, fileRejections: FileRejection[], event: React.DragEvent<HTMLDivElement>) => {
     const file = acceptedFiles[0];
     if (file) {
       const reader = new FileReader();
       reader.onloadend = () => {
         const imageData: any = reader.result;
-        setSelectedImage(imageData);
+
+        switch (file.name) {
+          case "appointmentLetter":
+            setAppointmentLetter(imageData);
+            break;
+          case "salarySlip":
+            setSalarySlip(imageData);
+            break;
+          case "relievingLetter":
+            setRelievingLetter(imageData);
+            break;
+          case "experienceLetter":
+            setExperienceLetter(imageData);
+            break;
+          default:
+            break;
+        }
       };
       reader.readAsDataURL(file);
     }
   };
+
   useEffect(() => {
-    // Reset form data when formData prop changes
     reset(formData);
   }, [formData]);
 
-  //@ts-ignore
-  const { getRootProps: getRootPropsAppointment, getInputProps: getInputPropsAppointment } = useDropzone({ onDrop, accept: "image/*" } as DropzoneOptions);
-  //@ts-ignore
-  const { getRootProps: getRootPropsSalary, getInputProps: getInputPropsSalary } = useDropzone({ onDrop, accept: "image/*" } as DropzoneOptions);
-  //@ts-ignore                                                                              
-  const { getRootProps: getRootPropsRelieving, getInputProps: getInputPropsRelieving } = useDropzone({ onDrop, accept: "image/*" } as DropzoneOptions);
-  //@ts-ignore
-  const { getRootProps: getRootPropsExperience, getInputProps: getInputPropsExperience } = useDropzone({ onDrop, accept: "image/*" } as DropzoneOptions);
+  const onSubmit: SubmitHandler<EmployeeSchemaType> = (data) => {
+    console.log("data", data);
+    onNext(data);
+  };
 
   return (
     <section className="mx-auto w-[80%] font-jost pt-4">
-      <form className="flex flex-col w-full justify-center pl-[10%]"
-      onSubmit={handleSubmit(onSubmit)}
-       >
+      <form
+        className="flex flex-col w-full justify-center pl-[10%]"
+        onSubmit={handleSubmit(onSubmit)}
+      >
         <div className="rounded-lg p-[5px]">
           <div className="flex w-full justify-between mb-10">
             <div className="w-[46%] border-[1px]">
               <label htmlFor="appointmentLetter">Appointment Letter</label>
-              <div className="relative w-[60px] h-[60px] " {...getRootPropsAppointment()}>
+              <div className="relative w-[60px] h-[60px]">
                 <img
-                  src={selectedImage || Avatar}
+                  src={appointmentLetter || Avatar}
                   alt="User Avatar"
                   className="w-full h-full object-contain"
                 />
-                <input {...getInputPropsAppointment()} {...register("appointmentLetter")} />
+                <input
+                  {...register("appointmentLetter")}
+                  //@ts-ignore
+                  onChange={(e) => onDrop(e.target.files, [], e)}
+                  type="file"
+                />
               </div>
-              {/* {errors.appointmentLetter && <p>{errors.appointmentLetter.message}</p>} */}
             </div>
             <div className="w-[46%] border-[1px]">
               <label htmlFor="salarySlip">Upload Salary Slip</label>
-              <div className="relative w-[60px] h-[60px]" {...getRootPropsSalary()}>
+              <div className="relative w-[60px] h-[60px]">
                 <img
-                  src={selectedImage || Avatar}
+                  src={salarySlip || Avatar}
                   alt="User Avatar"
                   className="w-full h-full object-contain"
                 />
-                <input {...getInputPropsSalary()} {...register("salarySlip")} />
+                <input
+                  {...register("salarySlip")}
+                  //@ts-ignore
+                  onChange={(e) => onDrop(e.target.files, [], e)}
+                  type="file"
+                />
               </div>
-              {/* {errors.salarySlip && <p>{errors.salarySlip.message}</p>} */}
             </div>
           </div>
           <div className="flex w-full justify-between pb-10">
             <div className="w-[46%] border-[1px]">
               <label htmlFor="relievingLetter">Upload Relieving Letter</label>
-              <div className="relative w-[60px] h-[60px]" {...getRootPropsRelieving()}>
+              <div className="relative w-[60px] h-[60px]">
                 <img
-                  src={selectedImage || Avatar}
+                  src={relievingLetter || Avatar}
                   alt="User Avatar"
                   className="w-full h-full object-contain"
                 />
-                <input {...getInputPropsRelieving()} {...register("relievingLetter")} />
+                <input
+                  {...register("relievingLetter")}
+                  //@ts-ignore
+                  onChange={(e) => onDrop(e.target.files, [], e)}
+                  type="file"
+                />
               </div>
-              {/* {errors.relievingLetter && <p>{errors.relievingLetter.message}</p>} */}
             </div>
             <div className="w-[46%] border-[1px]">
               <label htmlFor="experienceLetter">Upload Experience Letter</label>
-              <div className="relative w-[60px] h-[60px] " {...getRootPropsExperience()}>
+              <div className="relative w-[60px] h-[60px]">
                 <img
-                  src={selectedImage || Avatar}
+                  src={experienceLetter || Avatar}
                   alt="User Avatar"
                   className="w-full h-full object-contain"
                 />
-                <input {...getInputPropsExperience()} {...register("experienceLetter")} />
+                <input
+                  {...register("experienceLetter")}
+                  //@ts-ignore
+                  onChange={(e) => onDrop(e.target.files, [], e)}
+                  type="file"
+                />
               </div>
-              {/* {errors.experienceLetter && <p>{errors.experienceLetter.message}</p>} */}
             </div>
           </div>
-          <div className="w-[30%] flex justify-between">
-            <button
-              type="button"
-              className="bg-[white] w-[100px] h-[40px] text-[#307730] border-[#307730] rounded-md border-[1px]"
-            >
-              Cancel
+          <div className="flex justify-between mt-4">
+            <button type="button" onClick={onBack} className="bg-black text-white py-2 px-4 rounded">
+              Back
             </button>
-            <button
-              type="submit"
-              className="bg-[#307730] text-[white] w-[100px] h-[40px] rounded-md flex items-center justify-center"
-            >
-              Save
+            <button type="submit" className="bg-green-500 text-white py-2 px-4 rounded">
+              Next
             </button>
           </div>
         </div>
