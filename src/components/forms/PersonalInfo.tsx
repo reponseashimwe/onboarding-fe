@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import InputField from "../../helpers/InputField";
-import { useForm} from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { EmployeeSchemaType, employeeSchema } from "../validations/user";
 
@@ -9,20 +9,18 @@ interface PersonalInfoProps {
   formData: EmployeeSchemaType;
 }
 
-
-const PersonalInfo:React.FC<PersonalInfoProps> = ({onNext,formData}) => {
+const PersonalInfo: React.FC<PersonalInfoProps> = ({ onNext, formData }) => {
   const {
     register,
     handleSubmit,
     reset,
-    formState: { errors }
+    // formState: { errors },
   } = useForm<EmployeeSchemaType>({
     resolver: zodResolver(employeeSchema),
-    defaultValues: formData
+    defaultValues: formData,
   });
 
   useEffect(() => {
-    console.log(formData)
     reset(formData);
   }, [formData]);
   const onSubmit = (data: EmployeeSchemaType) => {
@@ -105,8 +103,8 @@ const PersonalInfo:React.FC<PersonalInfoProps> = ({onNext,formData}) => {
                 {...register("personalDetails.nationality")}
                 // error={errors?.personalDetails?.nationality}
               />
-              </div>
-              <div className="w-[43%]">
+            </div>
+            <div className="w-[43%]">
               <InputField
                 type="text"
                 placeholder="telephone number"
@@ -114,9 +112,9 @@ const PersonalInfo:React.FC<PersonalInfoProps> = ({onNext,formData}) => {
                 {...register("contactDetails.phoneNumber")}
                 // error={errors?.personalDetails?.nationality}
               />
-              </div>
             </div>
-            <div className="flex justify-between gap-2">
+          </div>
+          <div className="flex justify-between gap-2">
             <div className="w-[43%]">
               <InputField
                 type="text"
@@ -125,8 +123,8 @@ const PersonalInfo:React.FC<PersonalInfoProps> = ({onNext,formData}) => {
                 {...register("address.country")}
                 // error={errors?.personalDetails?.nationality}
               />
-              </div>
-              <div className="w-[43%]">
+            </div>
+            <div className="w-[43%]">
               <InputField
                 type="text"
                 placeholder="enter city name"
@@ -134,8 +132,8 @@ const PersonalInfo:React.FC<PersonalInfoProps> = ({onNext,formData}) => {
                 {...register("address.city")}
                 // error={errors?.personalDetails?.nationality}
               />
-              </div>
-              <div className="w-[43%]">
+            </div>
+            <div className="w-[43%]">
               <InputField
                 type="text"
                 placeholder="other cities"
@@ -143,12 +141,16 @@ const PersonalInfo:React.FC<PersonalInfoProps> = ({onNext,formData}) => {
                 {...register("address.otherAddress")}
                 // error={errors?.personalDetails?.nationality}
               />
-              </div>
             </div>
-        <div className="flex justify-between mt-4">
-        
-          <button type="submit" className="bg-green-500 text-white py-2 px-4 rounded">Next</button>
-        </div>
+          </div>
+          <div className="flex justify-between mt-4">
+            <button
+              type="submit"
+              className="bg-green-500 text-white py-2 px-4 rounded"
+            >
+              Next
+            </button>
+          </div>
         </div>
       </form>
     </section>
